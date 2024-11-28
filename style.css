@@ -16,19 +16,19 @@ body {
   padding: 20px 30px;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-  max-width: 400px;
+  max-width: 600px;
   width: 100%;
   text-align: center;
 }
 
 /* Títulos */
-h1 {
+h1, h2 {
   margin-bottom: 20px;
   font-size: 1.8rem;
   color: #ffa500;
 }
 
-/* Inputs do formulário */
+/* Inputs e textarea */
 form label {
   display: block;
   text-align: left;
@@ -37,7 +37,7 @@ form label {
   color: #ccc;
 }
 
-form input {
+form input, form textarea {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
@@ -46,6 +46,7 @@ form input {
   background: #292929;
   color: #fff;
   font-size: 0.9rem;
+  resize: none;
 }
 
 form button {
@@ -63,18 +64,16 @@ form button:hover {
   background: #e69500;
 }
 
-/* Links */
-.link {
-  display: block;
-  margin-top: 20px;
-  text-decoration: none;
-  color: #ffa500;
+/* Pesquisa */
+#search {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+  background: #292929;
+  color: #fff;
   font-size: 0.9rem;
-  transition: color 0.3s;
-}
-
-.link:hover {
-  color: #e69500;
 }
 
 /* Lista de dados */

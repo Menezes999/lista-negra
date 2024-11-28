@@ -51,9 +51,27 @@
           <p><strong>${index + 1}.</strong> Nome: <span>${item.name}</span></p>
           <p>Idade: <span>${item.age}</span></p>
           <p>Observação: <span>${item.obs}</span></p>
+          <button class="delete-button" data-index="${index}">Apagar</button>
         `;
         dataList.appendChild(entry);
       });
+
+      // Adicionar evento de clique aos botões de apagar
+      const deleteButtons = document.querySelectorAll('.delete-button');
+      deleteButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+          const indexToDelete = event.target.getAttribute('data-index');
+          deleteEntry(indexToDelete);
+        });
+      });
+    }
+
+    // Função para apagar uma entrada
+    function deleteEntry(index) {
+      const savedData = JSON.parse(localStorage.getItem('dataList')) || [];
+      savedData.splice(index, 1);
+      localStorage.setItem('dataList', JSON.stringify(savedData));
+      renderList(search.value); // Atualizar a lista considerando o filtro atual
     }
 
     // Evento de envio do formulário

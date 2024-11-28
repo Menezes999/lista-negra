@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Dados</title>
+</head>
+<body>
+  <h1>Lista de Dados</h1>
+  <ul id="dataList"></ul>
+  <a href="formulario.html">Voltar ao formulário</a>
+
+  <script>
+    // Recuperar a lista do localStorage
+    const dataList = JSON.parse(localStorage.getItem('dataList')) || [];
+
+    // Selecionar o elemento da lista
+    const ul = document.getElementById('dataList');
+
+    // Adicionar os itens à lista
+    dataList.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = `Nome: ${item.name}, Idade: ${item.age}`;
+      ul.appendChild(li);
+    });
+  </script>
+</body>
+</html>

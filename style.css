@@ -99,8 +99,8 @@
 
     .delete-icon {
       cursor: pointer; /* Mostra que é clicável */
-      width: 100px; /* Imagem pequena */
-      height: 100px; /* Imagem pequena */
+      width: 32px; /* Imagem pequena */
+      height: 32px; /* Imagem pequena */
       object-fit: contain; /* Ajusta a proporção */
       transition: transform 0.2s ease-in-out; /* Efeito hover */
     }

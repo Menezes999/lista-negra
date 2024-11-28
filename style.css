@@ -1,0 +1,101 @@
+/* Estilos gerais */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #121212;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Contêiner principal */
+.container {
+  background: #1e1e1e;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Títulos */
+h1 {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: #ffa500;
+}
+
+/* Inputs do formulário */
+form label {
+  display: block;
+  text-align: left;
+  margin: 10px 0 5px;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 5px;
+  background: #292929;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+form button {
+  background: #ffa500;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+form button:hover {
+  background: #e69500;
+}
+
+/* Links */
+.link {
+  display: block;
+  margin-top: 20px;
+  text-decoration: none;
+  color: #ffa500;
+  font-size: 0.9rem;
+  transition: color 0.3s;
+}
+
+.link:hover {
+  color: #e69500;
+}
+
+/* Lista de dados */
+.list {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.list-item {
+  background: #292929;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+.list-item p {
+  margin: 5px 0;
+  font-size: 0.95rem;
+}
+
+.list-item span {
+  color: #ffa500;
+}

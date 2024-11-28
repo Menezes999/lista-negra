@@ -22,7 +22,7 @@
     .container {
       max-width: 600px;
       margin: 0 auto;
-      background: #222; /* Fundo cinza escuro */
+      background: #000; /* Fundo totalmente preto */
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -51,7 +51,7 @@
       border: 1px solid #444; /* Borda escura */
       border-radius: 5px;
       font-size: 16px;
-      background-color: #333; /* Fundo escuro */
+      background-color: #222; /* Fundo escuro */
       color: #fff; /* Texto branco */
     }
 
@@ -82,8 +82,8 @@
     .list-item {
       padding: 10px;
       margin-bottom: 10px;
-      background: #444; /* Fundo escuro para os itens da lista */
-      border: 1px solid #333; /* Borda escura */
+      background: #333; /* Fundo mais escuro para os itens da lista */
+      border: 1px solid #444; /* Borda escura */
       border-radius: 5px;
       display: flex;
       align-items: center;

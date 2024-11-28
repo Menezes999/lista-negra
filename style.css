@@ -98,12 +98,12 @@
     }
 
     .delete-icon {
-      cursor: pointer; /* Mostra que é clicável */
-      width: 16px; /* Imagem pequena */
-      height: 16px; /* Imagem pequena */
-      object-fit: contain; /* Ajusta a proporção */
-      transition: transform 0.2s ease-in-out; /* Efeito hover */
-    }
+  cursor: pointer; /* Mostra que é clicável */
+  width: 20px; /* Tamanho menor da imagem */
+  height: 20px; /* Tamanho menor da imagem */
+  object-fit: contain; /* Ajusta a proporção da imagem */
+  transition: transform 0.2s ease-in-out; /* Efeito de aumento ao passar o mouse */
+}
 
     .delete-icon:hover {
       transform: scale(1.2); /* Aumenta a imagem ao passar o mouse */

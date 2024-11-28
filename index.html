@@ -51,15 +51,20 @@
           <p><strong>${index + 1}.</strong> Nome: <span>${item.name}</span></p>
           <p>Idade: <span>${item.age}</span></p>
           <p>Observação: <span>${item.obs}</span></p>
-          <button class="delete-button" data-index="${index}">Apagar</button>
+          <img 
+            src="lixeira-ou-lixo-pode-simbolo-icone-em-fundo-escuro-400-120849870.jpg" 
+            alt="Excluir" 
+            class="delete-icon" 
+            data-index="${index}" 
+            title="Apagar">
         `;
         dataList.appendChild(entry);
       });
 
-      // Adicionar evento de clique aos botões de apagar
-      const deleteButtons = document.querySelectorAll('.delete-button');
-      deleteButtons.forEach(button => {
-        button.addEventListener('click', (event) => {
+      // Adicionar evento de clique nas imagens de apagar
+      const deleteIcons = document.querySelectorAll('.delete-icon');
+      deleteIcons.forEach(icon => {
+        icon.addEventListener('click', (event) => {
           const indexToDelete = event.target.getAttribute('data-index');
           deleteEntry(indexToDelete);
         });

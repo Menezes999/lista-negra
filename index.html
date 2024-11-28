@@ -4,41 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulário</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Enviar Dados</h1>
-  <form id="dataForm">
-    <label for="name">Nome:</label>
-    <input type="text" id="name" required>
-    <br>
-    <label for="age">Idade:</label>
-    <input type="number" id="age" required>
-    <br>
-    <button type="submit">Enviar</button>
-  </form>
-  <a href="lista.html">Ver lista de dados</a>
+  <div class="container">
+    <h1>Enviar Dados</h1>
+    <form id="dataForm">
+      <label for="name">Nome:</label>
+      <input type="text" id="name" placeholder="Digite seu nome" required>
+      
+      <label for="age">Idade:</label>
+      <input type="number" id="age" placeholder="Digite sua idade" required>
+      
+      <button type="submit">Enviar</button>
+    </form>
+    <a href="lista.html" class="link">Ver lista de dados</a>
+  </div>
 
   <script>
     const form = document.getElementById('dataForm');
     form.addEventListener('submit', (event) => {
       event.preventDefault();
 
-      // Capturar os dados do formulário
       const name = document.getElementById('name').value;
       const age = document.getElementById('age').value;
 
-      // Recuperar a lista atual do localStorage
       let dataList = JSON.parse(localStorage.getItem('dataList')) || [];
-
-      // Adicionar o novo item
       dataList.push({ name, age });
-
-      // Salvar de volta no localStorage
       localStorage.setItem('dataList', JSON.stringify(dataList));
 
-      // Limpar o formulário
       form.reset();
-
       alert('Dados enviados com sucesso!');
     });
   </script>

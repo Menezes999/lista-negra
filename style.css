@@ -12,9 +12,10 @@
       box-sizing: border-box;
     }
 
+    /* Definições para garantir que toda a página tenha fundo preto */
     body {
       font-family: Arial, sans-serif;
-      background-color: #000; /* Fundo preto */
+      background-color: #000; /* Fundo totalmente preto */
       color: #fff; /* Texto branco */
       padding: 20px;
     }
@@ -22,14 +23,14 @@
     .container {
       max-width: 600px;
       margin: 0 auto;
-      background: #000; /* Fundo totalmente preto */
+      background: #000; /* Fundo da área de conteúdo preto */
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
 
     h1, h2 {
-      color: #00FF00; /* Detalhes em verde */
+      color: #00FF00; /* Títulos em verde */
       margin-bottom: 15px;
     }
 

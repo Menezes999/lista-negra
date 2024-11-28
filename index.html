@@ -3,39 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulário</title>
+  <title>Formulário e Lista</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>Enviar Dados</h1>
+    <h1>Gerenciador de Dados</h1>
+
     <form id="dataForm">
       <label for="name">Nome:</label>
       <input type="text" id="name" placeholder="Digite seu nome" required>
-      
+
       <label for="age">Idade:</label>
       <input type="number" id="age" placeholder="Digite sua idade" required>
-      
+
+      <label for="obs">Observação:</label>
+      <textarea id="obs" placeholder="Digite uma observação" required></textarea>
+
       <button type="submit">Enviar</button>
     </form>
-    <a href="lista.html" class="link">Ver lista de dados</a>
+
+    <h2>Pesquisar Pessoa</h2>
+    <input type="text" id="search" placeholder="Digite um nome para pesquisar">
+    
+    <h2>Lista de Pessoas</h2>
+    <div class="list" id="dataList"></div>
   </div>
 
   <script>
     const form = document.getElementById('dataForm');
+    const dataList = document.getElementById('dataList');
+    const search = document.getElementById('search');
+
+    // Função para renderizar a lista
+    function renderList(filter = '') {
+      const savedData = JSON.parse(localStorage.getItem('dataList')) || [];
+      dataList.innerHTML = '';
+
+      const filteredData = savedData.filter(item =>
+        item.name.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      filteredData.forEach((item, index) => {
+        const entry = document.createElement('div');
+        entry.className = 'list-item';
+        entry.innerHTML = `
+          <p><strong>${index + 1}.</strong> Nome: <span>${item.name}</span></p>
+          <p>Idade: <span>${item.age}</span></p>
+          <p>Observação: <span>${item.obs}</span></p>
+        `;
+        dataList.appendChild(entry);
+      });
+    }
+
+    // Evento de envio do formulário
     form.addEventListener('submit', (event) => {
       event.preventDefault();
 
       const name = document.getElementById('name').value;
       const age = document.getElementById('age').value;
+      const obs = document.getElementById('obs').value;
 
-      let dataList = JSON.parse(localStorage.getItem('dataList')) || [];
-      dataList.push({ name, age });
-      localStorage.setItem('dataList', JSON.stringify(dataList));
+      let savedData = JSON.parse(localStorage.getItem('dataList')) || [];
+      savedData.push({ name, age, obs });
+      localStorage.setItem('dataList', JSON.stringify(savedData));
 
       form.reset();
-      alert('Dados enviados com sucesso!');
+      renderList();
     });
+
+    // Evento de busca
+    search.addEventListener('input', (event) => {
+      const filter = event.target.value;
+      renderList(filter);
+    });
+
+    // Renderizar a lista na inicialização
+    renderList();
   </script>
 </body>
 </html>

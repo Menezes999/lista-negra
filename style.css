@@ -5,25 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulário e Lista</title>
   <style>
-    /* Reset básico */
-    body, h1, h2, p, form, input, textarea, button, div {
+    /* Garantindo que toda a página tenha o fundo preto */
+    * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    /* Definições para garantir que toda a página tenha fundo preto */
+    /* Definindo o fundo preto para toda a página */
     body {
       font-family: Arial, sans-serif;
-      background-color: #000; /* Fundo totalmente preto */
+      background-color: #000; /* Fundo completamente preto */
       color: #fff; /* Texto branco */
       padding: 20px;
     }
 
+    /* Estilizando o container para centralizar o conteúdo */
     .container {
       max-width: 600px;
       margin: 0 auto;
-      background: #000; /* Fundo da área de conteúdo preto */
+      background: #000; /* Fundo do container preto */
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -42,7 +43,7 @@
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
-      color: #fff; /* Texto branco */
+      color: #fff; /* Texto das labels em branco */
     }
 
     input[type="text"], input[type="number"], textarea, #search {
@@ -107,7 +108,6 @@
     .delete-icon:hover {
       transform: scale(1.2); /* Aumenta a imagem ao passar o mouse */
     }
-
   </style>
 </head>
 <body>

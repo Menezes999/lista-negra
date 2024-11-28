@@ -5,30 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulário e Lista</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
       font-family: Arial, sans-serif;
-      background-color: #000; /* Fundo preto */
-      color: #fff; /* Texto branco */
+      background: url('codigo.gif') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
       padding: 20px;
     }
 
     .container {
       max-width: 600px;
       margin: 0 auto;
-      background: #000; /* Fundo do container preto */
+      background: rgba(0, 0, 0, 0.8);
       padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
 
     h1, h2 {
-      color: #fff; /* Títulos brancos */
+      color: #fff;
       margin-bottom: 15px;
     }
 
@@ -40,39 +34,38 @@
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
-      color: #fff; /* Texto das labels em branco */
+      color: #fff;
     }
 
     input[type="text"], input[type="number"], textarea, #search {
       width: 100%;
       padding: 10px;
       margin-bottom: 15px;
-      border: 1px solid #444; /* Borda escura */
+      border: 1px solid #444;
       border-radius: 5px;
       font-size: 16px;
-      background-color: #222; /* Fundo escuro */
-      color: #fff; /* Texto branco */
+      background-color: #222;
+      color: #fff;
     }
 
     input[type="text"]:focus, input[type="number"]:focus, textarea:focus, #search:focus {
-      border-color: #fff; /* Borda branca ao focar */
+      border-color: #fff;
       outline: none;
     }
 
     button {
       display: inline-block;
-      background: #fff; /* Botão branco */
-      color: #000; /* Texto preto */
+      background: #fff;
+      color: #000;
       border: none;
       padding: 10px 15px;
       border-radius: 5px;
       cursor: pointer;
       font-size: 16px;
-      margin-bottom: 10px;
     }
 
     button:hover {
-      background: #ccc; /* Branco acinzentado ao passar o mouse */
+      background: #ccc;
     }
 
     .list {
@@ -82,8 +75,8 @@
     .list-item {
       padding: 10px;
       margin-bottom: 10px;
-      background: #333; /* Fundo mais escuro para os itens da lista */
-      border: 1px solid #444; /* Borda escura */
+      background: #333;
+      border: 1px solid #444;
       border-radius: 5px;
       display: flex;
       align-items: center;
@@ -92,19 +85,19 @@
 
     .list-item p {
       margin: 0;
-      color: #fff; /* Texto branco */
+      color: #fff;
     }
 
     .delete-icon {
-      cursor: pointer; /* Mostra que é clicável */
-      width: 29px; /* Tamanho menor da imagem */
-      height: 29px; /* Tamanho menor da imagem */
-      object-fit: contain; /* Ajusta a proporção da imagem */
-      transition: transform 0.2s ease-in-out; /* Efeito de aumento ao passar o mouse */
+      cursor: pointer;
+      width: 29px;
+      height: 29px;
+      object-fit: contain;
+      transition: transform 0.2s ease-in-out;
     }
 
     .delete-icon:hover {
-      transform: scale(1.2); /* Aumenta a imagem ao passar o mouse */
+      transform: scale(1.2);
     }
   </style>
 </head>
@@ -119,8 +112,8 @@
       <label for="age">Idade:</label>
       <input type="number" id="age" placeholder="Digite sua idade" required>
 
-      <label for="obs">Observação:</label>
-      <textarea id="obs" placeholder="Digite uma observação" required></textarea>
+      <label for="obs">Dados:</label>
+      <textarea id="obs" placeholder="Digite os dados" required></textarea>
 
       <button type="submit">Enviar</button>
     </form>
@@ -128,7 +121,7 @@
     <h2>Pesquisar Pessoa</h2>
     <input type="text" id="search" placeholder="Digite um nome para pesquisar">
     
-    <button id="downloadButton">Baixar Lista para o seu PC</button>
+    <button id="downloadBtn">Baixar Lista para o seu PC</button>
 
     <h2>Lista de Pessoas</h2>
     <div class="list" id="dataList"></div>
@@ -138,9 +131,8 @@
     const form = document.getElementById('dataForm');
     const dataList = document.getElementById('dataList');
     const search = document.getElementById('search');
-    const downloadButton = document.getElementById('downloadButton');
+    const downloadBtn = document.getElementById('downloadBtn');
 
-    // Função para renderizar a lista
     function renderList(filter = '') {
       const savedData = JSON.parse(localStorage.getItem('dataList')) || [];
       dataList.innerHTML = '';
@@ -155,13 +147,33 @@
         entry.innerHTML = `
           <p><strong>${index + 1}.</strong> Nome: <span>${item.name}</span></p>
           <p>Idade: <span>${item.age}</span></p>
-          <p>Observação: <span>${item.obs}</span></p>
+          <p>Dados: <span>${item.obs}</span></p>
+          <img 
+            src="lixeira-ou-lixo-pode-simbolo-icone-em-fundo-escuro-400-120849870.jpg" 
+            alt="Excluir" 
+            class="delete-icon" 
+            data-index="${index}" 
+            title="Apagar">
         `;
         dataList.appendChild(entry);
       });
+
+      const deleteIcons = document.querySelectorAll('.delete-icon');
+      deleteIcons.forEach(icon => {
+        icon.addEventListener('click', (event) => {
+          const indexToDelete = event.target.getAttribute('data-index');
+          deleteEntry(indexToDelete);
+        });
+      });
     }
 
-    // Função para salvar no LocalStorage
+    function deleteEntry(index) {
+      const savedData = JSON.parse(localStorage.getItem('dataList')) || [];
+      savedData.splice(index, 1);
+      localStorage.setItem('dataList', JSON.stringify(savedData));
+      renderList(search.value);
+    }
+
     form.addEventListener('submit', (event) => {
       event.preventDefault();
 
@@ -177,27 +189,30 @@
       renderList();
     });
 
-    // Função de busca
     search.addEventListener('input', (event) => {
       const filter = event.target.value;
       renderList(filter);
     });
 
-    // Função para baixar a lista como arquivo .txt
-    downloadButton.addEventListener('click', () => {
+    downloadBtn.addEventListener('click', () => {
       const savedData = JSON.parse(localStorage.getItem('dataList')) || [];
-      let text = savedData.map((item, index) => 
-        `#${index + 1}\nNome: ${item.name}\nIdade: ${item.age}\nObservação: ${item.obs}\n`
-      ).join('\n') + "\nGalaky Developer";
+      let textContent = savedData.map(
+        (item, index) =>
+          `${index + 1}. Nome: ${item.name}\n   Idade: ${item.age}\n   Dados: ${item.obs}`
+      ).join('\n\n');
+      textContent += `\n\nGalaky Developer`;
 
-      const blob = new Blob([text], { type: 'text/plain' });
+      const blob = new Blob([textContent], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+
       const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'lista_pessoas.txt';
+      link.href = url;
+      link.download = 'lista.txt';
       link.click();
+
+      URL.revokeObjectURL(url);
     });
 
-    // Renderizar lista inicial
     renderList();
   </script>
 </body>

@@ -1,100 +1,201 @@
-/* Estilos gerais */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #121212;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulário e Lista</title>
+  <style>
+    /* Reset básico */
+    body, h1, h2, p, form, input, textarea, button, div {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* Contêiner principal */
-.container {
-  background: #1e1e1e;
-  padding: 20px 30px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-  max-width: 600px;
-  width: 100%;
-  text-align: center;
-}
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      padding: 20px;
+    }
 
-/* Títulos */
-h1, h2 {
-  margin-bottom: 20px;
-  font-size: 1.8rem;
-  color: #ffa500;
-}
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-/* Inputs e textarea */
-form label {
-  display: block;
-  text-align: left;
-  margin: 10px 0 5px;
-  font-size: 0.9rem;
-  color: #ccc;
-}
+    h1, h2 {
+      color: #444;
+      margin-bottom: 15px;
+    }
 
-form input, form textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: none;
-  border-radius: 5px;
-  background: #292929;
-  color: #fff;
-  font-size: 0.9rem;
-  resize: none;
-}
+    form {
+      margin-bottom: 20px;
+    }
 
-form button {
-  background: #ffa500;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s;
-}
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
 
-form button:hover {
-  background: #e69500;
-}
+    input[type="text"], input[type="number"], textarea, #search {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
 
-/* Pesquisa */
-#search {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: none;
-  border-radius: 5px;
-  background: #292929;
-  color: #fff;
-  font-size: 0.9rem;
-}
+    button {
+      display: inline-block;
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
 
-/* Lista de dados */
-.list {
-  margin-top: 20px;
-  text-align: left;
-}
+    button:hover {
+      background: #0056b3;
+    }
 
-.list-item {
-  background: #292929;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-}
+    .list {
+      margin-top: 15px;
+    }
 
-.list-item p {
-  margin: 5px 0;
-  font-size: 0.95rem;
-}
+    .list-item {
+      padding: 10px;
+      margin-bottom: 10px;
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-.list-item span {
-  color: #ffa500;
-}
+    .list-item p {
+      margin: 0;
+    }
+
+    .delete-icon {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .delete-icon:hover {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Gerenciador de Dados</h1>
+
+    <form id="dataForm">
+      <label for="name">Nome:</label>
+      <input type="text" id="name" placeholder="Digite seu nome" required>
+
+      <label for="age">Idade:</label>
+      <input type="number" id="age" placeholder="Digite sua idade" required>
+
+      <label for="obs">Observação:</label>
+      <textarea id="obs" placeholder="Digite uma observação" required></textarea>
+
+      <button type="submit">Enviar</button>
+    </form>
+
+    <h2>Pesquisar Pessoa</h2>
+    <input type="text" id="search" placeholder="Digite um nome para pesquisar">
+    
+    <h2>Lista de Pessoas</h2>
+    <div class="list" id="dataList"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('dataForm');
+    const dataList = document.getElementById('dataList');
+    const search = document.getElementById('search');
+
+    // Função para renderizar a lista
+    function renderList(filter = '') {
+      const savedData = JSON.parse(localStorage.getItem('dataList')) || [];
+      dataList.innerHTML = '';
+
+      const filteredData = savedData.filter(item =>
+        item.name.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      filteredData.forEach((item, index) => {
+        const entry = document.createElement('div');
+        entry.className = 'list-item';
+        entry.innerHTML = `
+          <p><strong>${index + 1}.</strong> Nome: <span>${item.name}</span></p>
+          <p>Idade: <span>${item.age}</span></p>
+          <p>Observação: <span>${item.obs}</span></p>
+          <img 
+            src="lixeira-ou-lixo-pode-simbolo-icone-em-fundo-escuro-400-120849870.jpg" 
+            alt="Excluir" 
+            class="delete-icon" 
+            data-index="${index}" 
+            title="Apagar">
+        `;
+        dataList.appendChild(entry);
+      });
+
+      // Adicionar evento de clique nas imagens de apagar
+      const deleteIcons = document.querySelectorAll('.delete-icon');
+      deleteIcons.forEach(icon => {
+        icon.addEventListener('click', (event) => {
+          const indexToDelete = event.target.getAttribute('data-index');
+          deleteEntry(indexToDelete);
+        });
+      });
+    }
+
+    // Função para apagar uma entrada
+    function deleteEntry(index) {
+      const savedData = JSON.parse(localStorage.getItem('dataList')) || [];
+      savedData.splice(index, 1);
+      localStorage.setItem('dataList', JSON.stringify(savedData));
+      renderList(search.value); // Atualizar a lista considerando o filtro atual
+    }
+
+    // Evento de envio do formulário
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const age = document.getElementById('age').value;
+      const obs = document.getElementById('obs').value;
+
+      let savedData = JSON.parse(localStorage.getItem('dataList')) || [];
+      savedData.push({ name, age, obs });
+      localStorage.setItem('dataList', JSON.stringify(savedData));
+
+      form.reset();
+      renderList();
+    });
+
+    // Evento de busca
+    search.addEventListener('input', (event) => {
+      const filter = event.target.value;
+      renderList(filter);
+    });
+
+    // Renderizar a lista na inicialização
+    renderList();
+  </script>
+</body>
+</html>

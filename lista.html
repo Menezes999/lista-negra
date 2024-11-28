@@ -4,24 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lista de Dados</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Lista de Dados</h1>
-  <ul id="dataList"></ul>
-  <a href="formulario.html">Voltar ao formulário</a>
+  <div class="container">
+    <h1>Lista de Dados</h1>
+    <div class="list" id="dataList"></div>
+    <a href="index.html" class="link">Voltar ao formulário</a>
+  </div>
 
   <script>
-    // Recuperar a lista do localStorage
     const dataList = JSON.parse(localStorage.getItem('dataList')) || [];
+    const container = document.getElementById('dataList');
 
-    // Selecionar o elemento da lista
-    const ul = document.getElementById('dataList');
-
-    // Adicionar os itens à lista
-    dataList.forEach(item => {
-      const li = document.createElement('li');
-      li.textContent = `Nome: ${item.name}, Idade: ${item.age}`;
-      ul.appendChild(li);
+    dataList.forEach((item, index) => {
+      const entry = document.createElement('div');
+      entry.className = 'list-item';
+      entry.innerHTML = `
+        <p><strong>${index + 1}.</strong> Nome: <span>${item.name}</span></p>
+        <p>Idade: <span>${item.age}</span></p>
+      `;
+      container.appendChild(entry);
     });
   </script>
 </body>

@@ -4,7 +4,109 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulário e Lista</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000; /* Fundo preto */
+      color: #fff; /* Texto branco */
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #000; /* Fundo do container preto */
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    h1, h2 {
+      color: #fff; /* Títulos brancos */
+      margin-bottom: 15px;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #fff; /* Texto das labels em branco */
+    }
+
+    input[type="text"], input[type="number"], textarea, #search {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #444; /* Borda escura */
+      border-radius: 5px;
+      font-size: 16px;
+      background-color: #222; /* Fundo escuro */
+      color: #fff; /* Texto branco */
+    }
+
+    input[type="text"]:focus, input[type="number"]:focus, textarea:focus, #search:focus {
+      border-color: #fff; /* Borda branca ao focar */
+      outline: none;
+    }
+
+    button {
+      display: inline-block;
+      background: #fff; /* Botão branco */
+      color: #000; /* Texto preto */
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    button:hover {
+      background: #ccc; /* Branco acinzentado ao passar o mouse */
+    }
+
+    .list {
+      margin-top: 15px;
+    }
+
+    .list-item {
+      padding: 10px;
+      margin-bottom: 10px;
+      background: #333; /* Fundo mais escuro para os itens da lista */
+      border: 1px solid #444; /* Borda escura */
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .list-item p {
+      margin: 0;
+      color: #fff; /* Texto branco */
+    }
+
+    .delete-icon {
+      cursor: pointer; /* Mostra que é clicável */
+      width: 29px; /* Tamanho menor da imagem */
+      height: 29px; /* Tamanho menor da imagem */
+      object-fit: contain; /* Ajusta a proporção da imagem */
+      transition: transform 0.2s ease-in-out; /* Efeito de aumento ao passar o mouse */
+    }
+
+    .delete-icon:hover {
+      transform: scale(1.2); /* Aumenta a imagem ao passar o mouse */
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -26,6 +128,8 @@
     <h2>Pesquisar Pessoa</h2>
     <input type="text" id="search" placeholder="Digite um nome para pesquisar">
     
+    <button id="downloadButton">Baixar Lista para o seu PC</button>
+
     <h2>Lista de Pessoas</h2>
     <div class="list" id="dataList"></div>
   </div>
@@ -34,6 +138,7 @@
     const form = document.getElementById('dataForm');
     const dataList = document.getElementById('dataList');
     const search = document.getElementById('search');
+    const downloadButton = document.getElementById('downloadButton');
 
     // Função para renderizar a lista
     function renderList(filter = '') {
@@ -51,35 +156,12 @@
           <p><strong>${index + 1}.</strong> Nome: <span>${item.name}</span></p>
           <p>Idade: <span>${item.age}</span></p>
           <p>Observação: <span>${item.obs}</span></p>
-          <img 
-            src="lixeira-ou-lixo-pode-simbolo-icone-em-fundo-escuro-400-120849870.jpg" 
-            alt="Excluir" 
-            class="delete-icon" 
-            data-index="${index}" 
-            title="Apagar">
         `;
         dataList.appendChild(entry);
       });
-
-      // Adicionar evento de clique nas imagens de apagar
-      const deleteIcons = document.querySelectorAll('.delete-icon');
-      deleteIcons.forEach(icon => {
-        icon.addEventListener('click', (event) => {
-          const indexToDelete = event.target.getAttribute('data-index');
-          deleteEntry(indexToDelete);
-        });
-      });
     }
 
-    // Função para apagar uma entrada
-    function deleteEntry(index) {
-      const savedData = JSON.parse(localStorage.getItem('dataList')) || [];
-      savedData.splice(index, 1);
-      localStorage.setItem('dataList', JSON.stringify(savedData));
-      renderList(search.value); // Atualizar a lista considerando o filtro atual
-    }
-
-    // Evento de envio do formulário
+    // Função para salvar no LocalStorage
     form.addEventListener('submit', (event) => {
       event.preventDefault();
 
@@ -95,13 +177,27 @@
       renderList();
     });
 
-    // Evento de busca
+    // Função de busca
     search.addEventListener('input', (event) => {
       const filter = event.target.value;
       renderList(filter);
     });
 
-    // Renderizar a lista na inicialização
+    // Função para baixar a lista como arquivo .txt
+    downloadButton.addEventListener('click', () => {
+      const savedData = JSON.parse(localStorage.getItem('dataList')) || [];
+      let text = savedData.map((item, index) => 
+        `#${index + 1}\nNome: ${item.name}\nIdade: ${item.age}\nObservação: ${item.obs}\n`
+      ).join('\n') + "\nGalaky Developer";
+
+      const blob = new Blob([text], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'lista_pessoas.txt';
+      link.click();
+    });
+
+    // Renderizar lista inicial
     renderList();
   </script>
 </body>

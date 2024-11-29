@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulário e Lista</title>
+  <title>Gerenciador de Dados</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
       background: url('codigo.gif') no-repeat center center fixed;
       background-size: cover;
+      font-family: Arial, sans-serif;
       color: #fff;
       padding: 20px;
     }
@@ -22,22 +24,10 @@
     }
 
     h1, h2 {
-      color: #fff;
       margin-bottom: 15px;
     }
 
-    form {
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-      color: #fff;
-    }
-
-    input[type="text"], input[type="number"], textarea, #search {
+    input[type="file"], input[type="text"], input[type="number"], textarea, #search {
       width: 100%;
       padding: 10px;
       margin-bottom: 15px;
@@ -46,11 +36,6 @@
       font-size: 16px;
       background-color: #222;
       color: #fff;
-    }
-
-    input[type="text"]:focus, input[type="number"]:focus, textarea:focus, #search:focus {
-      border-color: #fff;
-      outline: none;
     }
 
     button {
@@ -62,14 +47,7 @@
       border-radius: 5px;
       cursor: pointer;
       font-size: 16px;
-    }
-
-    button:hover {
-      background: #ccc;
-    }
-
-    .list {
-      margin-top: 15px;
+      margin-right: 10px;
     }
 
     .list-item {
@@ -81,11 +59,6 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-    }
-
-    .list-item p {
-      margin: 0;
-      color: #fff;
     }
 
     .delete-icon {
@@ -120,8 +93,10 @@
 
     <h2>Pesquisar Pessoa</h2>
     <input type="text" id="search" placeholder="Digite um nome para pesquisar">
-    
-    <button id="downloadBtn">Baixar Lista para o seu PC</button>
+
+    <h2>Ações</h2>
+    <button id="downloadList">Baixar Lista para o seu PC</button>
+    <input type="file" id="uploadList" accept=".txt">
 
     <h2>Lista de Pessoas</h2>
     <div class="list" id="dataList"></div>
@@ -131,8 +106,10 @@
     const form = document.getElementById('dataForm');
     const dataList = document.getElementById('dataList');
     const search = document.getElementById('search');
-    const downloadBtn = document.getElementById('downloadBtn');
+    const downloadButton = document.getElementById('downloadList');
+    const uploadInput = document.getElementById('uploadList');
 
+    // Função para renderizar a lista
     function renderList(filter = '') {
       const savedData = JSON.parse(localStorage.getItem('dataList')) || [];
       dataList.innerHTML = '';
@@ -158,6 +135,7 @@
         dataList.appendChild(entry);
       });
 
+      // Adicionar evento de clique nas imagens de apagar
       const deleteIcons = document.querySelectorAll('.delete-icon');
       deleteIcons.forEach(icon => {
         icon.addEventListener('click', (event) => {
@@ -167,6 +145,7 @@
       });
     }
 
+    // Função para apagar uma entrada
     function deleteEntry(index) {
       const savedData = JSON.parse(localStorage.getItem('dataList')) || [];
       savedData.splice(index, 1);
@@ -174,6 +153,7 @@
       renderList(search.value);
     }
 
+    // Evento de envio do formulário
     form.addEventListener('submit', (event) => {
       event.preventDefault();
 
@@ -189,30 +169,59 @@
       renderList();
     });
 
+    // Evento de busca
     search.addEventListener('input', (event) => {
       const filter = event.target.value;
       renderList(filter);
     });
 
-    downloadBtn.addEventListener('click', () => {
+    // Botão de download
+    downloadButton.addEventListener('click', () => {
       const savedData = JSON.parse(localStorage.getItem('dataList')) || [];
-      let textContent = savedData.map(
-        (item, index) =>
-          `${index + 1}. Nome: ${item.name}\n   Idade: ${item.age}\n   Dados: ${item.obs}`
-      ).join('\n\n');
-      textContent += `\n\nGalaky Developer`;
+      let txtContent = '';
 
-      const blob = new Blob([textContent], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
+      savedData.forEach(item => {
+        txtContent += `Nome: ${item.name}\nIdade: ${item.age}\nDados: ${item.obs}\n\n`;
+      });
 
+      txtContent += 'Galaky Developer';
+
+      const blob = new Blob([txtContent], { type: 'text/plain' });
       const link = document.createElement('a');
-      link.href = url;
+      link.href = URL.createObjectURL(blob);
       link.download = 'lista.txt';
       link.click();
-
-      URL.revokeObjectURL(url);
     });
 
+    // Upload de lista
+    uploadInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const content = e.target.result;
+        const lines = content.split('\n').filter(line => line.trim());
+
+        let newList = [];
+        for (let i = 0; i < lines.length; i += 3) {
+          const name = lines[i]?.split('Nome: ')[1]?.trim() || '';
+          const age = lines[i + 1]?.split('Idade: ')[1]?.trim() || '';
+          const obs = lines[i + 2]?.split('Dados: ')[1]?.trim() || '';
+
+          if (name && age && obs) {
+            newList.push({ name, age, obs });
+          }
+        }
+
+        localStorage.setItem('dataList', JSON.stringify(newList));
+        renderList();
+      };
+
+      reader.readAsText(file);
+    });
+
+    // Renderizar a lista na inicialização
     renderList();
   </script>
 </body>
